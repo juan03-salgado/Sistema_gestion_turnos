@@ -1,2 +1,7 @@
 export enum EstadoTurno {
+    LISTO = 'LISTO',
+    EN_EJECUCION = 'EN_EJECUCION',
+    BLOQUEADO = 'BLOQUEADO',
+    FINALIZADO = 'FINALIZADO',
+    NO_PRESENTADO = 'NO_PRESENTADO'
 }
