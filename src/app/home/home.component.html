@@ -1,1 +1,39 @@
-<p>home works!</p>
+<div class="container py-5">
+
+    <h1 class="text-center fw-bold mb-4">TURNOMED</h1>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 text-center h-100">
+                <i class="bi bi-ticket-perforated text-primary fs-1"></i>
+                <h4 class="mt-3">Solicitar turno</h4>
+                <p class="text-secondary">Genera un turno para recibir atención.</p>
+
+                <a [routerLink]="['/solicitar-turno']" class="btn btn-primary">Solicitar</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 text-center h-100">
+                <i class="bi bi-display text-primary fs-1"></i>
+                <h4 class="mt-3">Pantalla de turnos</h4>
+                <p class="text-secondary">Consulta los turnos en espera y en atención.</p>
+
+                <a [routerLink]="['/pantalla-turnos']" class="btn btn-primary">Ver turnos</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 text-center h-100">
+                <i class="bi bi-cpu text-primary fs-1"></i>
+                <h4 class="mt-3">Gestión de atención</h4>
+                <p class="text-secondary">Controla la ejecución de los algoritmos.</p>
+
+                <a [routerLink]="['/gestion-atencion']" class="btn btn-primary">Abrir panel</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>

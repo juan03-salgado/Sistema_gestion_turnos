@@ -1,0 +1,33 @@
+.container {
+  max-width: 680px; 
+}
+
+.servicio-card {
+  border: 2px solid #dee2e6;
+  transition: 0.2s;
+}
+
+.servicio-card:hover,
+.servicio-card.seleccionado {
+  border-color: #0d6efd;
+  background-color: #e7f1ff;
+}
+
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  z-index: 1050;
+}
+
+.modal-comprobante {
+  background-color: #fff;
+  width: 100%;
+  max-width: 460px;
+  border-radius: 1rem;
+  padding: 2rem;
+}

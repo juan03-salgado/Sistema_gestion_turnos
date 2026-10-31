@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PanelSimulacionComponent } from './panel-simulacion.component';
+import { PanelSimulacionComponent } from './gestion-atencion.component';
 
 describe('PanelSimulacionComponent', () => {
   let component: PanelSimulacionComponent;

@@ -103,4 +103,14 @@ export class PlanificadorFifoService {
     this.turnoActual = null;
     this.tiempoActual = 0;
   }
+  
+  finalizarTurno(): void {
+    if (!this.turnoActual) {
+      return;
+    }
+
+    this.turnoActual.tiempoRestante = 0;
+    this.turnoActual.estado = EstadoTurno.FINALIZADO;
+    this.turnoActual = null;
+  }
 }

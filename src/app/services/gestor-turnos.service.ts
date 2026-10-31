@@ -13,7 +13,7 @@ export class GestorTurnosService {
 
   constructor() { }
 
-  crearTurno(turno: Turno): any {
+  crearTurno(turno: Turno): Turno {
 
     if (!turno.paciente.trim() || turno.tiempoCPU <= 0) {
       throw new Error('Los datos del turno no son válidos');

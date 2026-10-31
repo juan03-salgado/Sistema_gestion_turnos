@@ -1,1 +1,70 @@
-<p>pantalla-turnos works!</p>
+<div class="container-fluid py-4">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        <div class="row g-0">
+            <div class="col-lg-6">
+                    <div class="card-body text-center p-5 d-flex flex-column justify-content-center h-100">
+                        <i class="bi bi-person-check-fill text-primary fs-1"></i>
+                        <h3 class="fw-bold mt-3">TURNO EN ATENCIÓN</h3>
+
+                        @if (turnoActual) {
+                            <h1 class="display-1 fw-bold text-primary my-4"> {{turnoActual.numero}} </h1>
+                            <h3> {{turnoActual.paciente}} </h3>
+                            <p class="text-secondary"> {{turnoActual.tipoAtencion}} </p>
+
+                            <div class="d-flex justify-content-center gap-2 flex-wrap mt-3">
+                                <span class="badge text-bg-success fs-6"> {{turnoActual.estado}} </span>
+
+                                <span class="badge text-bg-primary fs-6">
+                                    <i class="bi bi-hospital me-2"></i>
+                                    Consultorio {{ turnoActual.consultorio ?? 1 }}
+                                </span>
+                            </div>
+                        } @else {
+                            <h2 class="text-secondary my-4">Sin turnos en atención</h2>
+                            <p class="text-secondary">Cuando se inicie una atención aparecerá aquí.</p>
+                        }
+                    </div>
+                </div>
+
+        <div class="col-lg-6">
+                <div class="card-body p-4 h-100 proximos-turnos">
+                    <h4 class="fw-bold mb-4">
+                        <i class="bi bi-people-fill text-primary me-2"></i>
+                        PRÓXIMOS TURNOS
+                    </h4>
+
+                    @if (turnosEspera.length > 0) {
+                        <div class="d-flex flex-column gap-3">
+                            @for (turno of turnosEspera; track turno.id) {
+
+                                <div class="turno-espera border rounded-3 p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h4 class="fw-bold text-primary mb-0">
+                                            {{ turno.numero }}
+                                        </h4>
+
+                                        <span class="badge text-bg-warning">
+                                            {{ turno.estado }}
+                                        </span>
+                                    </div>
+
+                                    <h6 class="mt-2 mb-1">
+                                        {{ turno.paciente }}
+                                    </h6>
+
+                                    <p class="text-secondary small mb-0">
+                                        {{ turno.tipoAtencion }}
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                    } @else {
+                        <div class="text-center py-4">
+                            <i class="bi bi-inbox text-secondary fs-1"></i>
+                            <p class="text-secondary mt-3 mb-0">No hay turnos pendientes.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>

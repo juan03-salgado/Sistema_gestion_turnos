@@ -1,0 +1,24 @@
+.container-fluid {
+    max-width: 1300px;
+}
+
+.proximos-turnos {
+    background-color: #f8f9fa;
+    border-left: 1px solid #dee2e6;
+}
+
+.turno-espera {
+    transition: all 0.2s ease;
+}
+
+.turno-espera:hover {
+    border-color: #0d6efd !important;
+    background-color: #f8fbff;
+}
+
+@media (max-width: 991px) {
+    .proximos-turnos {
+        border-left: none;
+        border-top: 1px solid #dee2e6;
+    }
+}
