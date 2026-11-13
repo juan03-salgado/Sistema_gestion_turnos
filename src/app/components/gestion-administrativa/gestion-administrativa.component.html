@@ -1,0 +1,204 @@
+<div class="container py-4">
+    <div class="card shadow-lg border-0 rounded-4 p-4">
+        <div class="text-center mb-4">
+            <i class="bi bi-clipboard-check text-primary display-5"></i>
+            <h3 class="fw-bold mt-2">GESTIÓN ADMINISTRATIVA</h3>
+            <p class="text-secondary mb-0">
+                Panel para administrar solicitudes y servicios del centro de salud.
+            </p>
+        </div>
+
+        @if (notificacion) {
+            <div class="alert alert-info d-flex align-items-center" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                {{ notificacion }}
+            </div>
+        }
+
+        <div class="bg-light rounded-4 p-4 text-center mb-4">
+
+            <h5 class="fw-bold mb-3">
+
+                <i class="bi bi-clipboard2-pulse-fill text-primary me-2"></i>
+                SOLICITUD EN GESTIÓN
+            </h5>
+
+            @if (turnoActual) {
+
+                <h1 class="display-3 fw-bold text-primary">
+                    {{ turnoActual.numero }}
+                </h1>
+
+                <h5>{{ turnoActual.paciente }}</h5>
+
+                <p class="text-secondary">
+                    {{ turnoActual.tipoAtencion }}
+                </p>
+
+                <span class="badge text-bg-success">
+                    EN GESTIÓN
+                </span>
+
+                <div class="alert alert-primary text-start mt-3">
+                    <h6 class="fw-bold"><i class="bi bi-info-circle-fill me-2"></i>
+                        Indicaciones para el personal
+                    </h6>
+
+                    <p class="small mb-2">Tenga en cuenta los siguientes pasos para gestionar esta solicitud:</p>
+
+                    <ul class="mb-0">
+                        @for (indicacion of obtenerIndicaciones(); track $index) {
+                            <li class="mb-1">{{ indicacion }}</li>
+                        }
+                    </ul>
+                </div>
+
+            } @else {
+
+                <h5 class="text-secondary my-3">No hay solicitudes en gestión.</h5>
+                <p class="text-secondary mb-0"> Llame a la siguiente solicitud para comenzar.</p>
+            }
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap mb-4">
+            <button
+                class="btn btn-primary flex-fill"
+                (click)="llamarSiguiente()"
+                [disabled]="!!turnoActual || cola.length === 0">
+
+                <i class="bi bi-megaphone-fill me-1"></i>
+                Llamar siguiente
+            </button>
+
+            <button
+                class="btn btn-warning flex-fill"
+                (click)="pausarGestion()"
+                [disabled]="!turnoActual">
+
+                <i class="bi bi-pause-circle-fill me-1"></i>
+                Pausar gestión
+            </button>
+
+            <button
+                class="btn btn-outline-danger flex-fill"
+                (click)="marcarNoPresentado(turnoActual!)"
+                [disabled]="!turnoActual">
+
+                <i class="bi bi-person-x-fill me-1"></i>
+                No se presentó
+            </button>
+
+        </div>
+
+
+        <div class="mb-4">
+            <h5 class="fw-bold mb-3">
+                <i class="bi bi-list-task text-primary me-2"></i>
+                SOLICITUDES PENDIENTES
+            </h5>
+
+            @if (cola.length > 0) {
+
+                @for (turno of cola; track turno.id) {
+                    <div class="border rounded-3 p-3 mb-2">
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <strong class="text-primary">
+                                {{ turno.numero }}
+                            </strong>
+
+                            <span class="badge text-bg-warning">
+                                EN ESPERA
+                            </span>
+
+                        </div>
+
+                        <h6 class="mt-2 mb-1">
+                            {{ turno.paciente }}
+                        </h6>
+
+                        <p class="text-secondary small mb-2">
+                            {{ turno.tipoAtencion }}
+                        </p>
+
+                        <p class="text-secondary small mb-3">
+                            Tiempo estimado restante: {{ turno.tiempoRestante }} unidades.
+                        </p>
+
+                        <button
+                            class="btn btn-sm btn-outline-warning"
+                            (click)="pausarSolicitudPendiente(turno)">
+
+                            <i class="bi bi-pause-circle me-1"></i>
+                            Pausar solicitud
+                        </button>
+
+                    </div>
+                }
+
+            } @else {
+                <div class="text-center py-3">
+                    <i class="bi bi-inbox text-secondary fs-2"></i>
+                    <p class="text-secondary mt-2 mb-0">
+                        No hay solicitudes pendientes.
+                    </p>
+                </div>
+            }
+
+        </div>
+
+        <div class="mb-3">
+            <h5 class="fw-bold mb-3">
+                <i class="bi bi-pause-circle-fill text-warning me-2"></i>
+                SOLICITUDES PAUSADAS
+            </h5>
+
+            @if (bloqueados.length > 0) {
+                @for (turno of bloqueados; track turno.id) {
+                    <div class="border border-warning rounded-3 p-3 mb-2">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <strong class="text-primary">
+                                {{ turno.numero }}
+                            </strong>
+
+                            <span class="badge text-bg-warning">
+                                PAUSADA
+                            </span>
+
+                        </div>
+
+                        <h6 class="mt-2 mb-1">
+                            {{ turno.paciente }}
+                        </h6>
+
+                        <p class="text-secondary small mb-2">
+                            {{ turno.tipoAtencion }}
+                        </p>
+
+                        <p class="text-secondary small mb-3">
+                            Tiempo estimado restante: {{ turno.tiempoRestante }} unidades.
+                        </p>
+
+                        <button
+                            class="btn btn-sm btn-outline-primary"
+                            (click)="reincorporarSolicitud(turno)">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>
+                            Reincorporar a espera
+                        </button>
+                    </div>
+
+                }
+
+            } @else {
+                <div class="text-center py-3">
+                    <i class="bi bi-lock text-secondary fs-2"></i>
+                    <p class="text-secondary mt-2 mb-0">
+                        No hay solicitudes pausadas.
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

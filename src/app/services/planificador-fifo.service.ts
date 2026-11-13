@@ -20,8 +20,16 @@ export class PlanificadorFifoService {
     }
   }
 
+  private turnoPrioritario(turno: Turno): boolean{
+    return turno.tipoAtencion === 'Atención prioritaria';
+  }
+
   private ordenarCola(): void {
     this.cola.sort((a, b) => {
+      if(this.turnoPrioritario(a) != this.turnoPrioritario(b)) {
+        return this.turnoPrioritario(a) ? -1 : 1;
+      }
+
       if(a.tiempoLlegada !== b.tiempoLlegada) {
         return a.tiempoLlegada - b.tiempoLlegada;
       }
@@ -76,6 +84,18 @@ export class PlanificadorFifoService {
     return bloqueado;
   }
 
+  bloquearTurnoEnCola(id: number): Turno | null {
+    const turno = this.cola.find(turno => turno.id === id);
+    
+    if(!turno || turno.estado !== EstadoTurno.LISTO) {
+      return null;
+    }
+
+    this.cola = this.cola.filter(t => t.id !== id);
+    turno.estado = EstadoTurno.BLOQUEADO;
+    return turno;
+  }
+
   desbloquearTurno(turno: Turno): void {
     if(turno.estado !== EstadoTurno.BLOQUEADO){
       return;
@@ -84,6 +104,14 @@ export class PlanificadorFifoService {
     turno.tiempoLlegada = this.tiempoActual;
 
     this.agregarTurno(turno);
+  }
+
+  retirarTurno(id: number): void {
+    this.cola = this.cola.filter(turno => turno.id !== id);
+
+    if(this.turnoActual?.id === id) {
+      this.turnoActual = null;
+    }
   }
 
   obtenerCola(): Turno[] {

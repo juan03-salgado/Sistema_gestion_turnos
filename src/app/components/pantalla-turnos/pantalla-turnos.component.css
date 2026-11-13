@@ -22,3 +22,17 @@
         border-top: 1px solid #dee2e6;
     }
 }
+
+.fondo-turnos::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-image: url('https://img.magnific.com/fotos-premium/medico-primer-plano-hospital-trabajando-tablet-pc_488220-12362.jpg?w=2000');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

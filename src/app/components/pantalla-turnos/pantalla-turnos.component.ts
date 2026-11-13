@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Turno } from '../../models/turno';
 import { GestorTurnosService } from '../../services/gestor-turnos.service';
+import { PlanificadorTurnosService } from '../../services/planificador-turnos.service';
 
 @Component({
   selector: 'app-pantalla-turnos',
@@ -11,14 +12,12 @@ import { GestorTurnosService } from '../../services/gestor-turnos.service';
 })
 export class PantallaTurnosComponent implements OnInit, OnDestroy {
 
-  turnoActual: Turno | null = null;
+  turnosActuales: Turno[] = [];
   turnosEspera: Turno[] = []; 
 
   private intervalo: any = null;
 
-  constructor(private gestor: GestorTurnosService
-    
-  ) {}
+  constructor(private planificador: PlanificadorTurnosService) {}
 
   ngOnInit(): void {
     this.actualizarPantalla();
@@ -29,11 +28,21 @@ export class PantallaTurnosComponent implements OnInit, OnDestroy {
   }
 
   actualizarPantalla(): void {
-    const enEjecucion = this.gestor.getTurnosEnEjecucion();
+    const turnoFifo = this.planificador.obtenerTurnoActual('FIFO');
+    const turnoRr = this.planificador.obtenerTurnoActual('RR');
 
-    this.turnoActual = enEjecucion.length > 0 ? enEjecucion[0] : null;
+    this.turnosActuales = [];
 
-    this.turnosEspera = this.gestor.getTurnosListos().sort((a, b) => a.tiempoLlegada - b.tiempoLlegada || a.id - b.id);
+    if(turnoFifo) {
+      this.turnosActuales.push(turnoFifo);
+    }
+
+    if(turnoRr) {
+      this.turnosActuales.push(turnoRr);
+    }
+
+    this.turnosEspera = [...this.planificador.obtenerCola('FIFO'), ...this.planificador.obtenerCola('RR')
+    ].sort((a, b) => a.tiempoLlegada - b.tiempoLlegada || a.id - b.id);
   }
   
   ngOnDestroy(): void {

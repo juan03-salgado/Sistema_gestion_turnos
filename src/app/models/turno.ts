@@ -10,6 +10,6 @@ export class Turno {
         public tiempoRestante: number,
         public estado: EstadoTurno,
         public tiempoLlegada: number,
-        public consultorio?: number
+        public cubiculo?: number
     ){}
 }

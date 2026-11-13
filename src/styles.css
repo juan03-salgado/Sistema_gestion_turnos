@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-image: url('https://img.magnific.com/vector-premium/hexagono-abstracto-fondo-estructura-molecular-innovacion-medica-quimica-ciencia_618588-887.jpg?w=2000');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}

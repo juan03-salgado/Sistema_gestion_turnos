@@ -47,6 +47,14 @@ export class SolicitarTurnoComponent {
         this.tiempoCPU = 2;
         break;
       
+      case 'Entrega de medicamentos':
+        this.tiempoCPU = 5;
+        break;
+      
+      case 'Trámite administrativo':
+        this.tiempoCPU = 4;
+        break;
+      
       case 'Autorización de citas':
         this.tiempoCPU = 2;
         break;

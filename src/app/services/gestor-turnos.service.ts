@@ -90,7 +90,7 @@ export class GestorTurnosService {
   marcarNoPresentado(id: number): boolean {
     const turno = this.getTurnoId(id);
 
-    if(!turno || turno.estado !== EstadoTurno.LISTO) {
+    if(!turno || (turno.estado !== EstadoTurno.LISTO && turno.estado !== EstadoTurno.EN_EJECUCION)) {
       return false;
     }
 

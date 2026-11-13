@@ -16,7 +16,10 @@ export class PlanificadorRrService {
   constructor() { }
 
   agregarTurno(turno: Turno): void {
-    if(turno.estado === EstadoTurno.LISTO && !this.cola.some(t => t.id === turno.id) && this.turnoActual?.id !== turno.id) {
+
+    const esSolicitudValida = turno.tipoAtencion === 'Entrega de medicamentos' || turno.tipoAtencion === 'Trámite administrativo';
+
+    if(esSolicitudValida && turno.estado === EstadoTurno.LISTO && !this.cola.some(t => t.id === turno.id) && this.turnoActual?.id !== turno.id) {
       this.cola.push(turno);
     }
   }
@@ -40,10 +43,6 @@ export class PlanificadorRrService {
     return null;
   }
 
-  obtenerCola(): Turno[] {
-    return [...this.cola];
-  }
-
   ejecutarUnidad(): Turno | null {
     const turno = this.obtenerSiguienteTurno();
 
@@ -61,6 +60,7 @@ export class PlanificadorRrService {
       turno.estado = EstadoTurno.FINALIZADO;
       this.turnoActual = null;
       this.tiempoQuantum = 0;
+
     } else if (this.tiempoQuantum >= this.quantum) {
       turno.estado = EstadoTurno.LISTO;
       this.turnoActual = null;
@@ -83,6 +83,19 @@ export class PlanificadorRrService {
     return bloqueado;
   }
 
+  bloquearTurnoEnCola(id: number): Turno | null {
+    const turno = this.cola.find(t => t.id === id);
+
+    if (!turno || turno.estado !== EstadoTurno.LISTO) {
+      return null;
+    }
+
+    this.cola = this.cola.filter(t => t.id !== id);
+    turno.estado = EstadoTurno.BLOQUEADO;
+
+    return turno;
+  }
+
   desbloquearTurno(turno: Turno): void {
     if(turno.estado !== EstadoTurno.BLOQUEADO){
       return;
@@ -93,9 +106,21 @@ export class PlanificadorRrService {
   }
 
   configurarQuantum(nuevoQuantum: number): void {
-    if(nuevoQuantum > 0) {
+    if(Number.isInteger(nuevoQuantum) && nuevoQuantum > 0) {
       this.quantum = nuevoQuantum;
     }
+  }
+
+  obtenerQuantum(): number {
+    return this.quantum;
+  }
+
+  obtenerTiempoQuantum(): number {
+    return this.tiempoQuantum;
+  }
+
+  obtenerCola(): Turno[] {
+    return [...this.cola];
   }
 
   obtenerTurnoActual(): Turno | null {
@@ -104,6 +129,15 @@ export class PlanificadorRrService {
 
   obtenerTiempoActual(): number {
     return this.tiempoActual;
+  }
+
+  retirarTurno(id: number): void {
+    this.cola = this.cola.filter(t => t.id !== id);
+
+    if (this.turnoActual?.id === id) {
+      this.turnoActual = null;
+      this.tiempoQuantum = 0;
+    }
   }
 
   reiniciar(): void {
@@ -121,5 +155,6 @@ export class PlanificadorRrService {
     this.turnoActual.tiempoRestante = 0;
     this.turnoActual.estado = EstadoTurno.FINALIZADO;
     this.turnoActual = null;
+    this.tiempoQuantum = 0;
   }
 }
