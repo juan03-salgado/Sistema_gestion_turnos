@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Turno } from '../../models/turno';
 import { PlanificadorTurnosService } from '../../services/planificador-turnos.service';
 import { GestorTurnosService } from '../../services/gestor-turnos.service';
@@ -26,7 +26,11 @@ export class GestionAdministrativaComponent implements OnInit {
 
   ngOnInit(): void {
     this.actualizarDatos();
+
+    if (this.turnoActual || this.cola.length > 0) {
+    this.iniciarProcesamiento();
   }
+}
 
   obtenerIndicaciones(): string[] {
     if(!this.turnoActual) {
@@ -67,8 +71,7 @@ export class GestionAdministrativaComponent implements OnInit {
     this.turnoActual = this.planificador.llamarSiguiente(3, 'RR');
 
     if (this.turnoActual) {
-      this.notificacion =
-        `Se ha llamado a la solicitud ${this.turnoActual.numero}.`;
+      this.notificacion = `Se ha llamado a la solicitud ${this.turnoActual.numero}.`;
     } else {
       this.notificacion = 'No hay solicitudes pendientes.';
     }
@@ -120,8 +123,7 @@ export class GestionAdministrativaComponent implements OnInit {
   }
 
   pausarSolicitudPendiente(turno: Turno): void {
-    const bloqueado =
-      this.planificador.bloquearTurnoEnCola(turno.id, 'RR');
+    const bloqueado = this.planificador.bloquearTurnoEnCola(turno.id, 'RR');
 
     if (!bloqueado) {
       this.notificacion = `No fue posible pausar la solicitud ${turno.numero}.`;
@@ -153,11 +155,13 @@ export class GestionAdministrativaComponent implements OnInit {
   }
 
   actualizarDatos(): void {
-    this.turnoActual =
-      this.planificador.obtenerTurnoActual('RR');
+    this.turnoActual = this.planificador.obtenerTurnoActual('RR');
 
-    this.cola =
-      this.planificador.obtenerCola('RR');
+    if(this.turnoActual) {
+      this.turnoActual.cubiculo = 3; 
+    }
+
+    this.cola = this.planificador.obtenerCola('RR');
 
     this.bloqueados = this.gestor.getTurnosBloqueados()
       .filter(turno =>
