@@ -2,3 +2,9 @@
   background: linear-gradient(90deg, #004a99 0%, #0d6efd 100%);
   border-bottom: 3px solid #00a8e8;
 }
+
+.activo {
+  background-color: rgba(0, 35, 75, 0.45) !important;
+  border-bottom: 2px solid #00a8e8 !important;
+  font-weight: 600;
+}

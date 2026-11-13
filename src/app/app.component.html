@@ -8,6 +8,28 @@
       </div>
     </div>
 
+    <nav class="d-flex flex-wrap gap-2">
+      <a [routerLink]="['/']" routerLinkActive="activo" [routerLinkActiveOptions]="{ exact: true }" class="btn btn-sm text-white">
+        Inicio
+      </a>
+
+      <a [routerLink]="['/solicitar-turno']" routerLinkActive="activo" class="btn btn-sm text-white">
+        Solicitar turno
+      </a>
+
+      <a [routerLink]="['/pantalla-turnos']" routerLinkActive="activo" class="btn btn-sm text-white">
+        Pantalla de turnos
+      </a>
+
+      <a [routerLink]="['/gestion-atencion']" routerLinkActive="activo" class="btn btn-sm text-white">
+        Atención médica
+      </a>
+
+      <a [routerLink]="['/gestion-administrativa']" routerLinkActive="activo" class="btn btn-sm text-white">
+        Gestión administrativa
+      </a>
+    </nav>
+
     <span class="badge bg-white text-primary fw-semibold px-3 py-2 rounded-pill">
       <i class="bi bi-geo-alt-fill me-1"></i> Sede Principal
     </span>
