@@ -31,7 +31,7 @@
 
                                 <div class="d-flex justify-content-center gap-2 flex-wrap">
                                     <span class="badge text-bg-success fs-6">
-                                        {{ turno.estado }}
+                                        {{ turno.estado === 'EN_EJECUCION' ? 'EN ATENCIÓN' : turno.estado }}
                                     </span>
 
                                     <span class="badge text-bg-primary fs-6">
@@ -73,7 +73,7 @@
                                     </h4>
 
                                     <span class="badge text-bg-warning">
-                                        {{ turno.estado }}
+                                        {{ turno.estado === 'LISTO' ? 'EN ESPERA' : turno.estado }}
                                     </span>
                                 </div>
 
