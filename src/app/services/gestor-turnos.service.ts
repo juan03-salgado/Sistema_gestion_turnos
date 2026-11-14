@@ -11,6 +11,17 @@ export class GestorTurnosService {
   private contadorTurnos: number = 1;
   private tiempoActual: number = 0;
 
+  private listaPrefijos = [
+    { tipo: 'Atención prioritaria', letra: 'P' },
+    { tipo: 'Consulta inicial', letra: 'M' },
+    { tipo: 'Consulta de control', letra: 'M' },
+    { tipo: 'Procedimientos médicos', letra: 'PR' },
+    { tipo: 'Entrega de medicamentos', letra: 'F' },
+    { tipo: 'Autorización de medicamentos', letra: 'A' },
+    { tipo: 'Autorización de citas', letra: 'A' },
+    { tipo: 'Trámite administrativo', letra: 'A' }
+  ];
+
   constructor() { }
 
   crearTurno(turno: Turno): Turno {
@@ -18,10 +29,13 @@ export class GestorTurnosService {
     if (!turno.paciente.trim() || turno.tiempoCPU <= 0) {
       throw new Error('Los datos del turno no son válidos');
     }
+
+    const encontrado = this.listaPrefijos.find(item => item.tipo === turno.tipoAtencion);
+    const prefijo = encontrado ? encontrado.letra : 'A';
     
     const nuevoTurno = new Turno(
       this.contadorTurnos,
-      `A-${String(this.contadorTurnos).padStart(3, '0')}`,
+      `${prefijo}-${String(this.contadorTurnos).padStart(3, '0')}`,
       turno.paciente,
       turno.tipoAtencion,
       turno.tiempoCPU,
